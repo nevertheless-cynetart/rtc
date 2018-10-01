@@ -24,8 +24,8 @@ Documentation - github.com/muaz-khan/WebRTC-Experiment/tree/master/getMediaEleme
 .media-container {
     width: 36%;
     display: inline-block;
-    border: 1px solid rgb(0, 0, 0);
-    border-radius: 4px;
+    
+    border-radius: 0px;
     overflow: hidden;
     vertical-align: top;
     background: white;
@@ -43,6 +43,7 @@ Documentation - github.com/muaz-khan/WebRTC-Experiment/tree/master/getMediaEleme
     margin-left: 5px;
     z-index: 100;
     opacity: 0;
+    visibility: hidden;
 }
 
 .media-controls .control, .volume-control .control {
