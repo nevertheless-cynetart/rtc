@@ -58,20 +58,20 @@ h2 {
 }
 
 .logo img {
-    height: 55px;
+    height: 0px;
 }
 
 nav {
-    margin-top: 17px;
+    margin-top: 0px;
     text-align: right;
 }
 
 header {
-    height: 50px;
+    height: 0px;
 }
 
 section, header {
-    border-bottom: 1px solid #95d4e7;
+    border-bottom: 0px solid #95d4e7;
 }
 
 section, header, footer {
