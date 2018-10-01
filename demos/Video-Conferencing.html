@@ -196,7 +196,7 @@ connection.onstream = function(event) {
     document.body.appendChild(event.mediaElement);
 };  
 
-/*
+
 connection.videosContainer = document.getElementById('videos-container');
 connection.onstream = function(event) {
     var existing = document.getElementById(event.streamid);
@@ -208,13 +208,16 @@ connection.onstream = function(event) {
     event.mediaElement.muted = true;
     event.mediaElement.volume = 0;
     var video = document.createElement('video');
-    try {
+  /*  
+  try {
         video.setAttributeNode(document.createAttribute('autoplay'));
         video.setAttributeNode(document.createAttribute('playsinline'));
     } catch (e) {
         video.setAttribute('autoplay', true);
         video.setAttribute('playsinline', true);
     }
+    */
+  
     if(event.type === 'local') {
       video.volume = 0;
       try {
@@ -231,7 +234,7 @@ connection.onstream = function(event) {
         width: width,
         showOnMouseEnter: false
     });
-  */
+  
   
     connection.videosContainer.appendChild(mediaElement);
     setTimeout(function() {
