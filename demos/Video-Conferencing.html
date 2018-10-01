@@ -231,7 +231,7 @@ connection.onstream = function(event) {
         showOnMouseEnter: false
     });
   
-  /*
+  
     connection.videosContainer.appendChild(mediaElement);
     setTimeout(function() {
         mediaElement.media.play();
@@ -241,7 +241,7 @@ connection.onstream = function(event) {
     localStorage.setItem(connection.socketMessageEvent, connection.sessionid);
 };
 
-*/
+
   
 connection.onstreamended = function(event) {
     var mediaElement = document.getElementById(event.streamid);
