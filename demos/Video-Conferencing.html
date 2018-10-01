@@ -102,6 +102,48 @@ if (DetectRTC.browser.name === 'Firefox') {
     };
 }
   
+connection.mediaConstraints = {
+    audio: true,
+    video: {
+        mandatory: {
+            minAspectRatio: 1.77
+        },
+        optional: []
+    }
+};
+
+if (DetectRTC.browser.name === 'Firefox') {
+    connection.mediaConstraints = {
+        audio: true,
+        video: {
+            aspectRatio: 1.77
+        }
+    };
+}  
+  
+connection.mediaConstraints = {
+    audio: true,
+    video: {
+        mandatory: {
+            minFrameRate: 5,
+            maxFrameRate: 15
+        },
+        optional: []
+    }
+};
+
+if (DetectRTC.browser.name === 'Firefox') {
+    connection.mediaConstraints = {
+        audio: true,
+        video: {
+            frameRate: {
+                min: 5,
+                max: 15
+            }
+        }
+    };
+}  
+  
 connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: true,
     OfferToReceiveVideo: true
