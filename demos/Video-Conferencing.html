@@ -121,11 +121,17 @@ if (DetectRTC.browser.name === 'Firefox') {
     };
 }  
   
+connection.bandwidth = {
+    audio: 50,  // 50 kbps
+    video: 256, // 256 kbps
+    screen: 300 // 300 kbps
+};  
+  
 connection.mediaConstraints = {
     audio: true,
     video: {
         mandatory: {
-            minFrameRate: 5,
+            minFrameRate: 15,
             maxFrameRate: 15
         },
         optional: []
@@ -137,7 +143,7 @@ if (DetectRTC.browser.name === 'Firefox') {
         audio: true,
         video: {
             frameRate: {
-                min: 5,
+                min: 15,
                 max: 15
             }
         }
