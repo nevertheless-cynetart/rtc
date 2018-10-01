@@ -208,7 +208,7 @@ connection.onstream = function(event) {
     event.mediaElement.muted = true;
     event.mediaElement.volume = 0;
     var video = document.createElement('video');
-  /*  
+    
   try {
         video.setAttributeNode(document.createAttribute('autoplay'));
         video.setAttributeNode(document.createAttribute('playsinline'));
@@ -216,8 +216,6 @@ connection.onstream = function(event) {
         video.setAttribute('autoplay', true);
         video.setAttribute('playsinline', true);
     }
-    */
-  
     if(event.type === 'local') {
       video.volume = 0;
       try {
@@ -345,19 +343,7 @@ if(navigator.connection &&
 
   <section>
     <p>
-      .
-    </p>
 
-    <p>
-      .
-    </p>
-
-    <p>
-      .
-    </p>
-
-    <p>
-      .
     </p>
   </section>
 
