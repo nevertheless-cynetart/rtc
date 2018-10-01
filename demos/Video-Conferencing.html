@@ -185,6 +185,16 @@ connection.sdpConstraints.mandatory = {
     OfferToReceiveVideo: true
 };
   
+connection.onstream = function(event) {
+    // skip duplicate videos
+    if (document.getElementById(event.streamid)) return;
+
+    // give each video a unique ID
+    event.mediaElement.id = event.streamid;
+
+    // append video to HTML
+    document.body.appendChild(event.mediaElement);
+};  
   
 connection.videosContainer = document.getElementById('videos-container');
 connection.onstream = function(event) {
@@ -215,11 +225,13 @@ connection.onstream = function(event) {
     video.srcObject = event.stream;
     var width = parseInt(connection.videosContainer.clientWidth / 4) - 20;
     var mediaElement = getHTMLMediaElement(video, {
-        title: event.userid,
+        //title: event.userid,
         buttons: ['full-screen'],
         width: width,
         showOnMouseEnter: false
     });
+  
+  /*
     connection.videosContainer.appendChild(mediaElement);
     setTimeout(function() {
         mediaElement.media.play();
@@ -228,6 +240,9 @@ connection.onstream = function(event) {
     // to keep room-id in cache
     localStorage.setItem(connection.socketMessageEvent, connection.sessionid);
 };
+
+*/
+  
 connection.onstreamended = function(event) {
     var mediaElement = document.getElementById(event.streamid);
     if (mediaElement) {
