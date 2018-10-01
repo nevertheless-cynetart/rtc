@@ -77,7 +77,7 @@ connection.socketMessageEvent = 'video-conference-demo';
   
 connection.session = {
     video: true, // screen || audio || video
-    audio: true
+    audio: false
     
 };
   
@@ -181,8 +181,8 @@ connection.onunmute = function(event) {
   
 
 connection.sdpConstraints.mandatory = {
-    OfferToReceiveAudio: false,
-    OfferToReceiveVideo: false
+    OfferToReceiveAudio: true,
+    OfferToReceiveVideo: true
 };
   
   
