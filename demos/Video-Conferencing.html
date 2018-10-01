@@ -78,6 +78,30 @@ connection.session = {
     audio: true,
     video: true
 };
+  
+  connection.mediaConstraints = {
+    audio: true,
+    video: {
+        mandatory: {
+            minWidth: 320,
+            maxWidth: 640,
+            minHeight: 240,
+            maxHeight: 480
+        },
+        optional: []
+    }
+};
+
+if (DetectRTC.browser.name === 'Firefox') {
+    connection.mediaConstraints = {
+        audio: true,
+        video: {
+            width: 640,
+            height: 480
+        }
+    };
+}
+  
 connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: true,
     OfferToReceiveVideo: true
