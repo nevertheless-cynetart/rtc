@@ -181,7 +181,7 @@ connection.onunmute = function(event) {
   
 
 connection.sdpConstraints.mandatory = {
-    OfferToReceiveAudio: false,
+    OfferToReceiveAudio: true,
     OfferToReceiveVideo: true
 };
   
@@ -195,7 +195,8 @@ connection.onstream = function(event) {
     // append video to HTML
     document.body.appendChild(event.mediaElement);
 };  
-  
+
+/*
 connection.videosContainer = document.getElementById('videos-container');
 connection.onstream = function(event) {
     var existing = document.getElementById(event.streamid);
@@ -230,7 +231,7 @@ connection.onstream = function(event) {
         width: width,
         showOnMouseEnter: false
     });
-  
+  */
   
     connection.videosContainer.appendChild(mediaElement);
     setTimeout(function() {
