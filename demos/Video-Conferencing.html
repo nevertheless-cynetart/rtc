@@ -74,9 +74,11 @@ connection.socketURL = '/';
 // comment-out below line if you do not have your own socket.io server
 // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 connection.socketMessageEvent = 'video-conference-demo';
+  
 connection.session = {
+    video: true, // screen || audio || video
     audio: true,
-    video: true
+    oneway: true
 };
   
   connection.mediaConstraints = {
@@ -177,10 +179,13 @@ connection.onunmute = function(event) {
 };  
   
   
+
 connection.sdpConstraints.mandatory = {
-    OfferToReceiveAudio: true,
-    OfferToReceiveVideo: true
+    OfferToReceiveAudio: false,
+    OfferToReceiveVideo: false
 };
+  
+  
 connection.videosContainer = document.getElementById('videos-container');
 connection.onstream = function(event) {
     var existing = document.getElementById(event.streamid);
