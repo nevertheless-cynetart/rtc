@@ -223,8 +223,8 @@ connection.onstream = function(event) {
   
   connection.videosContainer.appendChild(mediaElement);
     setTimeout(function() {
-        mediaElement.media.play();
-    }, 5000);
+        //mediaElement.media.play();
+   // }, 5000);
     mediaElement.id = event.streamid;
     // to keep room-id in cache
     localStorage.setItem(connection.socketMessageEvent, connection.sessionid);
