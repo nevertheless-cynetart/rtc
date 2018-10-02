@@ -4,29 +4,61 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>nevertheless</title>
+  <title>Video Conferencing using RTCMultiConnection</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  
   <link rel="shortcut icon" href="/demos/logo.png">
   <link rel="stylesheet" href="/demos/stylesheet.css">
   <script src="/demos/menu.js"></script>
 </head>
 <body>
-<div class="button-container">
+  <header>
+    <a class="logo" href="/demos/"><img src="/demos/logo.png" alt="RTCMultiConnection"></a>
+    <a href="/demos/" class="menu-explorer">Menu<img src="/demos/menu-icon.png" alt="Menu"></a>
+    <nav>
+      <li>
+        <a href="/demos/">Home</a>
+      </li>
+      <li>
+        <a href="https://www.rtcmulticonnection.org/docs/getting-started/">Getting Started</a>
+      </li>
+      <li>
+        <a href="https://www.rtcmulticonnection.org/FAQ/">FAQ</a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/playlist?list=PLPRQUXAnRydKdyun-vjKPMrySoow2N4tl">YouTube</a>
+      </li>
+      <li>
+        <a href="https://rtcmulticonnection.herokuapp.com/demos/">Demos</a>
+      </li>
+      <li>
+        <a href="https://github.com/muaz-khan/RTCMultiConnection/wiki">Wiki</a>
+      </li>
+      <li>
+        <a href="https://github.com/muaz-khan/RTCMultiConnection">Github</a>
+      </li>
+    </nav>
+  </header>
+
+  <h1>
+    Video Conferencing using RTCMultiConnection
+    <p class="no-mobile">
+      Multi-user (many-to-many) video chat using mesh networking model.
+    </p>
+  </h1>
+
   <section class="make-center">
     <input type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20>
     <button id="open-room">Open Room</button>
     <button id="join-room">Join Room</button>
     <button id="open-or-join-room">Auto Open Or Join Room</button>
-    <div id="videos-container"></div>
+
+    <div id="videos-container" style="margin: 20px 0;"></div>
 
     <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
   </section>
-  </div>
-  
-  <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
-  
-  <script src="/dev/adapter.js"></script>
+
+<script src="/dist/RTCMultiConnection.min.js"></script>
+<script src="/dev/adapter.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 
 <!-- custom layout for HTML5 audio/video elements -->
@@ -42,10 +74,12 @@ document.getElementById('open-room').onclick = function() {
         showRoomURL(connection.sessionid);
     });
 };
+
 document.getElementById('join-room').onclick = function() {
     disableInputButtons();
     connection.join(document.getElementById('room-id').value);
 };
+
 document.getElementById('open-or-join-room').onclick = function() {
     disableInputButtons();
     connection.openOrJoin(document.getElementById('room-id').value, function(isRoomExist, roomid) {
@@ -55,177 +89,53 @@ document.getElementById('open-or-join-room').onclick = function() {
         }
     });
 };
+
 // ......................................................
 // ..................RTCMultiConnection Code.............
 // ......................................................
+
 var connection = new RTCMultiConnection();
+
 // by default, socket.io server is assumed to be deployed on your own URL
 connection.socketURL = '/';
+
 // comment-out below line if you do not have your own socket.io server
 // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+
 connection.socketMessageEvent = 'video-conference-demo';
 
-
-  
-  
 connection.session = {
-    video: true, // screen || audio || video
-    audio: true
-    
-};
-  
-  connection.mediaConstraints = {
     audio: true,
-    video: {
-        mandatory: {
-            minWidth: 320,
-            maxWidth: 640,
-            minHeight: 240,
-            maxHeight: 480
-        },
-        optional: []
-    }
+    video: true
 };
-
-if (DetectRTC.browser.name === 'Firefox') {
-    connection.mediaConstraints = {
-        audio: true,
-        video: {
-            width: 640,
-            height: 480
-        }
-    };
-}
-  
-connection.mediaConstraints = {
-    audio: true,
-    video: {
-        mandatory: {
-            minAspectRatio: 1.77
-        },
-        optional: []
-    }
-};
-
-if (DetectRTC.browser.name === 'Firefox') {
-    connection.mediaConstraints = {
-        audio: true,
-        video: {
-            aspectRatio: 1.77
-        }
-    };
-}  
-  
-connection.bandwidth = {
-    audio: 50,  // 50 kbps
-    video: 256, // 256 kbps
-    screen: 300 // 300 kbps
-};  
-  
-connection.mediaConstraints = {
-    audio: true,
-    video: {
-        mandatory: {
-            minFrameRate: 15,
-            maxFrameRate: 15
-        },
-        optional: []
-    }
-};
-
-if (DetectRTC.browser.name === 'Firefox') {
-    connection.mediaConstraints = {
-        audio: true,
-        video: {
-            frameRate: {
-                min: 15,
-                max: 15
-            }
-        }
-    };
-}  
-  
-  
-function afterEach(setTimeoutInteval, numberOfTimes, callback, startedTimes) {
-    startedTimes = (startedTimes || 0) + 1;
-    if (startedTimes >= numberOfTimes) return;
-
-    setTimeout(function() {
-        callback();
-        afterEach(setTimeoutInteval, numberOfTimes, callback, startedTimes);
-    }, setTimeoutInteval);
-}
-
-connection.onunmute = function(event) {
-    // event.isAudio == audio-only-stream
-    // event.audio == has audio tracks
-
-    if (event.isAudio || event.session.audio) {
-        // set volume=0
-        event.mediaElement.volume = 0;
-
-        // steadily increase volume
-        afterEach(200, 5, function() {
-            event.mediaElement.volume += .20;
-        });
-    }
-};  
-  
-  
 
 connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: true,
     OfferToReceiveVideo: true
 };
-  
-connection.onstream = function(event) {
-    // skip duplicate videos
-    if (document.getElementById(event.streamid)) return;
 
-    // give each video a unique ID
-    event.mediaElement.id = event.streamid;
-
-    // append video to HTML
-    document.body.appendChild(event.mediaElement);
-};  
-
-  //
-  
-  
-connection.onstream = function(event) {
-    var video = event.mediaElement;
-    if (document.getElementById(video.id)) return;
-    document.body.appendChild(video);
-};
-  
-  
-  //
-  
-  
 connection.videosContainer = document.getElementById('videos-container');
-  
 connection.onstream = function(event) {
     var existing = document.getElementById(event.streamid);
     if(existing && existing.parentNode) {
       existing.parentNode.removeChild(existing);
     }
+
     event.mediaElement.removeAttribute('src');
     event.mediaElement.removeAttribute('srcObject');
     event.mediaElement.muted = true;
     event.mediaElement.volume = 0;
+
     var video = document.createElement('video');
-    
-  try {
+
+    try {
         video.setAttributeNode(document.createAttribute('autoplay'));
         video.setAttributeNode(document.createAttribute('playsinline'));
     } catch (e) {
         video.setAttribute('autoplay', true);
         video.setAttribute('playsinline', true);
-      video.setAttribute("controls", true);
-      setTimeout(() => {
-    video.removeAttribute("controls");
-});
     }
+
     if(event.type === 'local') {
       video.volume = 0;
       try {
@@ -235,72 +145,87 @@ connection.onstream = function(event) {
       }
     }
     video.srcObject = event.stream;
-    var width = parseInt(connection.videosContainer.clientWidth / 4) - 20;
+
+    var width = parseInt(connection.videosContainer.clientWidth / 3) - 20;
     var mediaElement = getHTMLMediaElement(video, {
-        //title: event.userid,
+        title: event.userid,
         buttons: ['full-screen'],
         width: width,
         showOnMouseEnter: false
     });
-  
-  connection.videosContainer.appendChild(mediaElement);
+
+    connection.videosContainer.appendChild(mediaElement);
+
     setTimeout(function() {
         mediaElement.media.play();
     }, 5000);
+
     mediaElement.id = event.streamid;
+
     // to keep room-id in cache
     localStorage.setItem(connection.socketMessageEvent, connection.sessionid);
-    
 };
 
-
-  
 connection.onstreamended = function(event) {
     var mediaElement = document.getElementById(event.streamid);
     if (mediaElement) {
         mediaElement.parentNode.removeChild(mediaElement);
     }
 };
+
 connection.onMediaError = function(e) {
     if (e.message === 'Concurrent mic process limit.') {
         if (DetectRTC.audioInputDevices.length <= 1) {
             alert('Please select external microphone. Check github issue number 483.');
             return;
         }
+
         var secondaryMic = DetectRTC.audioInputDevices[1].deviceId;
         connection.mediaConstraints.audio = {
             deviceId: secondaryMic
         };
+
         connection.join(connection.sessionid);
     }
 };
+
 // ..................................
 // ALL below scripts are redundant!!!
 // ..................................
+
 function disableInputButtons() {
     document.getElementById('room-id').onkeyup();
+
     document.getElementById('open-or-join-room').disabled = true;
     document.getElementById('open-room').disabled = true;
     document.getElementById('join-room').disabled = true;
     document.getElementById('room-id').disabled = true;
 }
+
 // ......................................................
 // ......................Handling Room-ID................
 // ......................................................
+
 function showRoomURL(roomid) {
     var roomHashURL = '#' + roomid;
     var roomQueryStringURL = '?roomid=' + roomid;
+
     var html = '<h2>Unique URL for your room:</h2><br>';
+
     html += 'Hash URL: <a href="' + roomHashURL + '" target="_blank">' + roomHashURL + '</a>';
     html += '<br>';
     html += 'QueryString URL: <a href="' + roomQueryStringURL + '" target="_blank">' + roomQueryStringURL + '</a>';
+
     var roomURLsDiv = document.getElementById('room-urls');
     roomURLsDiv.innerHTML = html;
+
     roomURLsDiv.style.display = 'block';
 }
+
 (function() {
     var params = {},
         r = /([^&=]+)=?([^&]*)/g;
+
     function d(s) {
         return decodeURIComponent(s.replace(/\+/g, ' '));
     }
@@ -309,28 +234,34 @@ function showRoomURL(roomid) {
         params[d(match[1])] = d(match[2]);
     window.params = params;
 })();
+
 var roomid = '';
 if (localStorage.getItem(connection.socketMessageEvent)) {
     roomid = localStorage.getItem(connection.socketMessageEvent);
 } else {
     roomid = connection.token();
 }
+
 var txtRoomId = document.getElementById('room-id');
 txtRoomId.value = roomid;
 txtRoomId.onkeyup = txtRoomId.oninput = txtRoomId.onpaste = function() {
     localStorage.setItem(connection.socketMessageEvent, document.getElementById('room-id').value);
 };
+
 var hashString = location.hash.replace('#', '');
 if (hashString.length && hashString.indexOf('comment-') == 0) {
     hashString = '';
 }
+
 var roomid = params.roomid;
 if (!roomid && hashString.length) {
     roomid = hashString;
 }
+
 if (roomid && roomid.length) {
     document.getElementById('room-id').value = roomid;
     localStorage.setItem(connection.socketMessageEvent, roomid);
+
     // auto-join-room
     (function reCheckRoomPresence() {
         connection.checkPresence(roomid, function(isRoomExist) {
@@ -338,11 +269,14 @@ if (roomid && roomid.length) {
                 connection.join(roomid);
                 return;
             }
+
             setTimeout(reCheckRoomPresence, 5000);
         });
     })();
+
     disableInputButtons();
 }
+
 // detect 2G
 if(navigator.connection &&
    navigator.connection.type === 'cellular' &&
@@ -353,7 +287,23 @@ if(navigator.connection &&
 
   <section>
     <p>
-please close this window to exit the video chat
+      You can write cordova/ionic/phonegap based <a href="https://www.rtcmulticonnection.org/docs/Write-iOS-Apps/" target="_blank">iOS</a> or <a href="https://www.rtcmulticonnection.org/docs/Write-Android-Apps/" target="_blank">Android</a> apps for this demo as well. 
+
+      You can download <a href="https://webrtcweb.com/cordova-apps/video-conferencing/">an open-sourced cordova app</a> both for iOS and Android as well.
+    </p>
+
+    <p>
+      You can run same demo on Safari-11 as well. (both on MacOSX & iOS)
+    </p>
+
+    <p>
+      You can install following Android app and join meetings from this demo:
+
+      <a href="https://play.google.com/store/apps/details?id=rmc3.videoconference" target="_blank">https://play.google.com/store/apps/details?id=rmc3.videoconference</a>
+    </p>
+
+    <p>
+      Microsoft Edge is also supported.
     </p>
   </section>
 
