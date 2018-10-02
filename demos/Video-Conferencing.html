@@ -185,7 +185,19 @@ connection.onstream = function(event) {
     document.body.appendChild(event.mediaElement);
 };  
 
-
+  //
+  
+  
+connection.onstream = function(event) {
+    var video = event.mediaElement;
+    if (document.getElementById(video.id)) return;
+    document.body.appendChild(video);
+};
+  
+  
+  //
+  
+  
 connection.videosContainer = document.getElementById('videos-container');
   
 connection.onstream = function(event) {
@@ -205,6 +217,10 @@ connection.onstream = function(event) {
     } catch (e) {
         video.setAttribute('autoplay', true);
         video.setAttribute('playsinline', true);
+      video.setAttribute("controls", true);
+      setTimeout(() => {
+    video.removeAttribute("controls");
+});
     }
     if(event.type === 'local') {
       video.volume = 0;
