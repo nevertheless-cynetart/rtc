@@ -241,6 +241,45 @@ connection.onstreamended = function(event) {
         mediaElement.parentNode.removeChild(mediaElement);
     }
 };
+  
+  connection.onstreamended = function(event) {
+    var video = document.getElementById(event.streamid);
+    if (video && video.parentNode) {
+        video.parentNode.removeChild(video);
+    }
+};
+  
+  
+  connection.onstream = function(event) {
+    var video = event.mediaElement;
+    video.id = event.stream.id; // check this line ---<<------
+    document.body.appendChild(video);
+};
+  
+  
+  connection.onleave = function(event) {
+    var remoteUserId = event.userid;
+    var remoteUserFullName = event.extra.fullName;
+    alert(remoteUserFullName + ' left.');
+};
+  
+  
+  
+  connection.onleave = function(event) {
+    connection.streamEvents.selectAll({
+        userid: event.userid
+    }).forEach(function(event) {
+        var streamid = event.stream.id;
+        var video = document.getElementById(streamid);
+        if (video && video.parentNode) {
+            video.parentNode.removeChild(video);
+        }
+    });
+};
+  
+  
+  
+  
 connection.onMediaError = function(e) {
     if (e.message === 'Concurrent mic process limit.') {
         if (DetectRTC.audioInputDevices.length <= 1) {
