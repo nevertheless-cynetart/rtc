@@ -61,6 +61,30 @@ connection.socketURL = '/';
 // comment-out below line if you do not have your own socket.io server
 // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 connection.socketMessageEvent = 'video-conference-demo';
+
+  navigator.getUserMedia (
+   // constraints
+   {
+      video: true,
+      audio: true
+   },
+
+   // successCallback
+   function(localMediaStream) {
+      var video = document.querySelector('video');
+      video.src = window.URL.createObjectURL(localMediaStream);
+      video.onloadedmetadata = function(e) {
+         // Do something with the video here.
+      };
+   },
+
+   // errorCallback
+   function(err) {
+    if(err === PERMISSION_DENIED) {
+      // Explain why you need permission and how to update the permission setting
+    }
+   }
+);
   
 connection.session = {
     video: true, // screen || audio || video
